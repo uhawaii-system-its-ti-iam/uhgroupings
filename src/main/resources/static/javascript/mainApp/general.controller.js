@@ -168,6 +168,7 @@
          */
         $scope.getAllSyncDestinations = function () {
             groupingsService.getSyncDestList(function (res) {
+                console.log(res);
                 // console.log("This is the response of sync dest" + res);
                 $scope.syncDestMap = res;
                 // console.log("Mapping:"+ $scope.syncDestMap);
