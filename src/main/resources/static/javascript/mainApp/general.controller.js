@@ -111,7 +111,6 @@
          */
         $scope.displayGrouping = function (currentPage, index) {
             $scope.selectedGrouping = $scope.pagedItemsGroupings[currentPage][index];
-            // $scope.getAllSyncDestinations();
             $scope.getGroupingInformation();
 
 
@@ -167,7 +166,8 @@
          * @returns {String[]} list of possible sync destinations
          */
         $scope.getAllSyncDestinations = function () {
-            groupingsService.getSyncDestList(function (res) {
+            const groupingPath = $scope.selectedGrouping.path;
+            groupingsService.getSyncDestList(groupingPath, function (res) {
                 console.log(res);
                 // console.log("This is the response of sync dest" + res);
                 $scope.syncDestMap = res;
@@ -275,7 +275,6 @@
                         } catch (error) {
                             console.log("Getting members from grouping has errored out please reload page to resume. If not please proceed to the feedback page and report the problem you have come across.");
                         }
-
                         currentPage++;
                     }
                 }, function (res) {
