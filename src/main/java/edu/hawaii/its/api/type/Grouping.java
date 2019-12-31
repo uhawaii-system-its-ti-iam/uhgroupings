@@ -1,6 +1,7 @@
 package edu.hawaii.its.api.type;
 
-import java.util.HashMap;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 public class Grouping {
@@ -29,7 +30,7 @@ public class Grouping {
 
     private boolean isOptOutOn = false;
 
-    private Map<String, Boolean> syncDestinations = new HashMap<>();
+    private List<SyncDestination> syncDestinations = new ArrayList<>();
 
     // Constructor.
     public Grouping() {
@@ -46,19 +47,25 @@ public class Grouping {
         setOwners(new EmptyGroup());
     }
 
-    public Map<String, Boolean> getSyncDestinations() {
+    public List<SyncDestination> getSyncDestinations() {
         return syncDestinations;
     }
 
-    public void setSyncDestinations(Map<String, Boolean> syncDestinations) {
+    public void setSyncDestinations(List<SyncDestination> syncDestinations) {
         this.syncDestinations = syncDestinations;
     }
 
     public boolean isSyncDestinationOn(String key) {
-        if (!syncDestinations.containsKey(key)) {
-            return false;
+
+        boolean isOn = false;
+
+        for (SyncDestination destination : syncDestinations) {
+            if (destination.getName().equals(key)) {
+                isOn = destination.getIsSynced();
+            }
         }
-        return syncDestinations.get(key);
+
+        return isOn;
     }
 
     public String getName() {
