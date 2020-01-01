@@ -248,10 +248,10 @@
                     $scope.allowOptIn = res.optInOn;
                     $scope.allowOptOut = res.optOutOn;
 
-                    const syncDestResponseMapping = new Map(Object.entries(res.syncDestinations));
-                    syncDestResponseMapping.forEach((value, key, map) => {
-                        $scope.syncDestArray.push({ name: key, value: value });
-                    });
+                    $scope.syncDestArray = res.syncDestinations;
+
+                    console.log($scope.syncDestArray);
+
                     $scope.setSyncDestLabels();
 
                     //Stop loading spinner and turn on loading text
@@ -368,17 +368,17 @@
         // There's no way around this as we can't dynamically generate these strings without external data in server
         // As far as I know, this can't go into the properties file because the checkboxes are generated dynamically
         $scope.setSyncDestLabels = function () {
-            $scope.syncDestArray[0].label = "CAS/LDAP: uhReleasedGrouping";
-            $scope.syncDestArray[1].label = "Email list: <" + $scope.selectedGrouping.name + "@lists.hawaii.edu>";
-
-            $scope.syncDestArray[0].confimationModalLabel = "CAS/LDAP";
-            $scope.syncDestArray[1].confimationModalLabel = "Email List";
-
-            $scope.syncDestArray[0].tooltip = "Synchronize an individual’s membership with the individual’s CAS/LDAP attribute uhReleasedGrouping.";
-            $scope.syncDestArray[1].tooltip = "Synchronize the grouping’s membership with a corresponding LISTSERV list, which will be created as needed.";
-
-            $scope.syncDestArray[0].confirmationModalText = "Click Ok to update the CAS/LDAP preference as requested.";
-            $scope.syncDestArray[1].confirmationModalText = "Click Ok to update the Email list preference as requested.";
+            // $scope.syncDestArray[0].label = "CAS/LDAP: uhReleasedGrouping";
+            // $scope.syncDestArray[1].label = "Email list: <" + $scope.selectedGrouping.name + "@lists.hawaii.edu>";
+            //
+            // $scope.syncDestArray[0].confimationModalLabel = "CAS/LDAP";
+            // $scope.syncDestArray[1].confimationModalLabel = "Email List";
+            //
+            // $scope.syncDestArray[0].tooltip = "Synchronize an individual’s membership with the individual’s CAS/LDAP attribute uhReleasedGrouping.";
+            // $scope.syncDestArray[1].tooltip = "Synchronize the grouping’s membership with a corresponding LISTSERV list, which will be created as needed.";
+            //
+            // $scope.syncDestArray[0].confirmationModalText = "Click Ok to update the CAS/LDAP preference as requested.";
+            // $scope.syncDestArray[1].confirmationModalText = "Click Ok to update the Email list preference as requested.";
         };
 
         /**
@@ -1546,7 +1546,7 @@
             const indexOfSyncDest = $scope.syncDestArray.map((e) => {
                 return e.name;
             }).indexOf(syncDestName);
-            const syncDestOn = $scope.syncDestArray[indexOfSyncDest].value;
+            const syncDestOn = $scope.syncDestArray[indexOfSyncDest].isSynced;
             return syncDestOn;
         };
 
@@ -1571,7 +1571,7 @@
             const indexOfSyncDest = $scope.syncDestArray.map((e) => {
                 return e.name;
             }).indexOf(syncDestName);
-            $scope.syncDestArray[indexOfSyncDest].value = syncDestvalue;
+            $scope.syncDestArray[indexOfSyncDest].isSynced = syncDestvalue;
         };
 
         /**
@@ -1580,7 +1580,6 @@
          */
         $scope.updateSingleSyncDest = function (syncDestName) {
             const groupingPath = $scope.selectedGrouping.path;
-            // const syncDestOn = $scope.syncDestMap.get(syncDest);
             const syncDestOn = $scope.getSyncDestValueInArray(syncDestName);
 
             groupingsService.setSyncDest(groupingPath, syncDestName, syncDestOn, handleSuccessfulPreferenceToggle, handleUnsuccessfulRequest);
