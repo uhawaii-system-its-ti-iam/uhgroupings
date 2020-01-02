@@ -364,23 +364,6 @@
             );
         };
 
-        //todo IMPORTANT: This is the only function we have to update manually when adding new syncDests
-        // There's no way around this as we can't dynamically generate these strings without external data in server
-        // As far as I know, this can't go into the properties file because the checkboxes are generated dynamically
-        $scope.setSyncDestLabels = function () {
-            // $scope.syncDestArray[0].label = "CAS/LDAP: uhReleasedGrouping";
-            // $scope.syncDestArray[1].label = "Email list: <" + $scope.selectedGrouping.name + "@lists.hawaii.edu>";
-            //
-            // $scope.syncDestArray[0].confimationModalLabel = "CAS/LDAP";
-            // $scope.syncDestArray[1].confimationModalLabel = "Email List";
-            //
-            // $scope.syncDestArray[0].tooltip = "Synchronize an individual’s membership with the individual’s CAS/LDAP attribute uhReleasedGrouping.";
-            // $scope.syncDestArray[1].tooltip = "Synchronize the grouping’s membership with a corresponding LISTSERV list, which will be created as needed.";
-            //
-            // $scope.syncDestArray[0].confirmationModalText = "Click Ok to update the CAS/LDAP preference as requested.";
-            // $scope.syncDestArray[1].confirmationModalText = "Click Ok to update the Email list preference as requested.";
-        };
-
         /**
          * Check the length of the text string entered in the description form box, for error handling of max length
          */
