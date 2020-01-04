@@ -665,7 +665,7 @@ public class GroupingsRestController {
     @RequestMapping(value = "/groupings/{path}/syncDestinations",
             method = RequestMethod.GET,
             produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<List<String>> getAllSyncDestinations(Principal principal,
+    public ResponseEntity getAllSyncDestinations(Principal principal,
             @PathVariable String path) {
         logger.info("Entered REST getAllSyncDestinations...");
 

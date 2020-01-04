@@ -250,10 +250,6 @@
 
                     $scope.syncDestArray = res.syncDestinations;
 
-                    console.log($scope.syncDestArray);
-
-                    $scope.setSyncDestLabels();
-
                     //Stop loading spinner and turn on loading text
                     $scope.loading = false;
                     $scope.paginatingProgress = true;

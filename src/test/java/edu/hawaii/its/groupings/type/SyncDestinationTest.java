@@ -66,12 +66,12 @@ public class SyncDestinationTest {
 
     @Test
     public void parseKeyVal() {
-        String desc = "this is a decription";
+        String desc = "this is a description";
         String descReg = "this is ${} description with regex characters";
         String replacer = "replaced";
 
 
-        assertThat(desc = destination.parseKeyVal(replacer, desc), equalTo("this is a decription"));
+        assertThat(desc = destination.parseKeyVal(replacer, desc), equalTo("this is a description"));
 
         assertThat(descReg = destination.parseKeyVal(replacer, descReg), equalTo("this is replaced description with regex characters"));
 
