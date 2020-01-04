@@ -8,9 +8,9 @@ body {
     font-family: 'Source Sans Pro', 'Helvetica', Arial, sans-serif;
     padding-top: 3.5rem; /*Required padding for .navbar-fixed-top. Remove if using .navbar-static-top. Change if height of navigation changes. */
     /*padding-bottom: 3.125rem;*/
-    display: flex;
+    display: flex; /* Creates flexboxes. */
     min-height: 100vh;
-    flex-direction: column;
+    flex-direction: column; /* Makes the body display vertical. */
 }
 
 h1 {
@@ -28,6 +28,11 @@ h3 {
 
 h4 {
     font-size: 1rem;
+}
+
+main {
+    flex: 1; /* IMPORTANT FOR STICKY FOOTER. */
+             /* Intializes the length which containers will expand or shrink. */
 }
 
 .loader {
@@ -561,3 +566,46 @@ form.seamless button {
     color: #212529;
     font-weight: bold;
 }
+
+/**
+ * Styling for selected grouping header.
+ * Styles the grouping name and 'Return to Groupings'
+ * button, so on mobile, the button sits on top of the
+ * grouping name, eliminating whitespace.
+ */
+@media screen and (max-width: 735px) {
+    #selectedGroupHeader {
+        display:table; /* The row is now a table */
+        /* Centering */
+        margin: auto;
+        width: 100%;
+        padding: 0px;
+    }
+
+    #groupNameCol {
+        display: table-footer-group; /* Makes the grouping name the footer of table */
+    }
+
+    #returnToGroup {
+        display: table-header-group; /* Makes the button the header of table */
+
+    }
+
+}
+
+/**
+ * Styling for selected grouping header.
+ * Styles the grouping name and 'Return to Groupings'
+ * button, when browser size decreases, the button sits
+ * on top of the grouping name, elimitaing whitespace.
+ */
+@media screen and (min-width: 3000px) {
+    #groupNameCol {
+        display: inline-block; /* displays group name inline */
+    }
+
+    #returnToGroup {
+         display: inline-block; /* displays 'return to groupings button' inline */
+    }
+}
+
