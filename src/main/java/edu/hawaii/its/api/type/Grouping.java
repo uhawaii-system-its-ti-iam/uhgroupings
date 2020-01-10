@@ -67,6 +67,12 @@ public class Grouping {
     public void setSyncDestination(String key, Boolean boo) {
 
         syncDestinationsState.replace(key, boo);
+
+        for (SyncDestination destination : syncDestinations) {
+            if(destination.getName().equals(key)) {
+                destination.setIsSynced(boo);
+            }
+        }
     }
 
     public String getName() {
