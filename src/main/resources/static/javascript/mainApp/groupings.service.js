@@ -171,6 +171,19 @@
                 let endpoint = BASE_URL + "groupings/" + path + "/" + "includeMembers/" + member;
                 dataProvider.updateData(onSuccess, onError, endpoint);
             },
+
+            /**
+             * Removes multiple members from the include group of a grouping.
+             * @param path - The path to the grouping.
+             * @param membersToRemove - The comma separated string of members to remove from the group.
+             * @param onSuccess
+             * @param onError
+             */
+            removeMembersFromInclude(path, membersToRemove, onSuccess, onError) {
+                let endpoint = BASE_URL + "groupings/" + path + "/" + "includeMembers/" + membersToRemove;
+                dataProvider.updateData(onSuccess, onError, endpoint);
+            },
+
             /**
              * Removes a member from the exclude group of a grouping.
              * @param {string} path - the path to the grouping
@@ -180,6 +193,18 @@
              */
             removeMemberFromExclude(path, member, onSuccess, onError) {
                 let endpoint = BASE_URL + "groupings/" + path + "/" + "excludeMembers/" + member;
+                dataProvider.updateData(onSuccess, onError, endpoint);
+            },
+
+            /**
+             * Removes multiple members from the exclude group of a grouping.
+             * @param path - The path to the grouping.
+             * @param membersToRemove - The comma separated string of members to remove from the group.
+             * @param onSuccess
+             * @param onError
+             */
+            removeMembersFromExclude(path, membersToRemove, onSuccess, onError) {
+                let endpoint = BASE_URL + "groupings/" + path + "/" + "excludeMembers/" + membersToRemove;
                 dataProvider.updateData(onSuccess, onError, endpoint);
             },
 
