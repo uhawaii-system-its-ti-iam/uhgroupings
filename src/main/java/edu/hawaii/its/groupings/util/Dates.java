@@ -160,20 +160,13 @@ public final class Dates {
     }
 
     public static LocalDate toLocalDate(Date date) {
-        Date result = new Date();
-        try {
-            if (date instanceof java.sql.Date) {
-                result.setTime(date.getTime());
-            }
-            Instant instant = date.toInstant();
-            ZoneId zoneId = zoneId();
-            ZonedDateTime zoneDateTime = instant.atZone(zoneId);
-            return zoneDateTime.toLocalDate();
-
-        } catch (ClassCastException e) {
-            System.err.println(e.getMessage());
+        if (date instanceof java.sql.Date) {
+            date = new Date(date.getTime());
         }
-        return null;
+        Instant instant = date.toInstant();
+        ZoneId zoneId = zoneId();
+        ZonedDateTime zoneDateTime = instant.atZone(zoneId);
+        return zoneDateTime.toLocalDate();
     }
 
     public static Date toDate(LocalDate localDate) {

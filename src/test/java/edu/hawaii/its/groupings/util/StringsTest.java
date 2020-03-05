@@ -1,7 +1,6 @@
 package edu.hawaii.its.groupings.util;
 
 import static org.hamcrest.CoreMatchers.is;
-import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNull;
@@ -41,7 +40,7 @@ public class StringsTest {
     }
 
     @Test
-    public void truncate() {
+    public void trunctate() {
         String s = "abcdefghijk";
         assertThat(Strings.truncate(s, 3), is("abc"));
         assertThat(Strings.truncate(s, 2), is("ab"));
@@ -56,8 +55,8 @@ public class StringsTest {
         // Note this result:
         try {
             assertThat(Strings.truncate(s, -1), is(s));
-        } catch (IndexOutOfBoundsException ex) {
-            assertEquals(s, Strings.truncate(s, -1));
+        } catch (Exception ex) {
+            assertTrue(ex instanceof IndexOutOfBoundsException);
         }
     }
 

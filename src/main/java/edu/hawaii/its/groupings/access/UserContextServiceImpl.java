@@ -37,8 +37,10 @@ public class UserContextServiceImpl implements UserContextService {
     @Override
     public void setCurrentUhUuid(String uhUuid) {
         User user = getCurrentUser();
-        if (null != user && user.hasRole(Role.ADMIN)) {
-            user.setUhUuid(uhUuid);
+        if (user != null) {
+            if (user.hasRole(Role.ADMIN)) {
+                user.setUhUuid(uhUuid);
+            }
         }
     }
 

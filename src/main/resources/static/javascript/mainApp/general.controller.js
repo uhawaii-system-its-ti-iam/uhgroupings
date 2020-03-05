@@ -159,6 +159,7 @@
         $scope.getAllSyncDestinations = function () {
             const groupingPath = $scope.selectedGrouping.path;
             groupingsService.getSyncDestList(groupingPath, function (res) {
+                console.log(res);
                 // console.log("This is the response of sync dest" + res);
                 $scope.syncDestMap = res;
                 // console.log("Mapping:"+ $scope.syncDestMap);
@@ -248,7 +249,7 @@
                     currentPage++;
                     loadMembersList = true;
 
-                    //While true loop that calls members asynchronously from Grouper based on PAGE_SIZE
+                    //While true loop that calls members asynchornously from Grouper based on PAGE_SIZE
                     while (loadMembersList) {
                         /**
                          *Calls getPages function to load the rest of the members,
@@ -493,23 +494,23 @@
          */
         $scope.addMembers = function (listName) {
             $scope.listName = listName;
-            let numMembers = ($scope.usersToAdd.split(" ").length - 1);
+            let num_members = ($scope.usersToAdd.split(" ").length - 1);
 
 
-            if (numMembers > 0) {
+            if (num_members > 0) {
                 let users = $scope.usersToAdd.split(/[ ,]+/).join(",");
 
                 $scope.usersToAdd = [];
-                if (numMembers > $scope.maxImport) {
+                if (num_members > $scope.maxImport) {
                     launchCreateGenericOkModal(
                         "Out of Bounds Import Warning",
                         `Importing more than ${$scope.maxImport} users is not allowed.`,
                         8000);
                 } else {
-                    if (numMembers > $scope.multiAddThreshold) {
+                    if (num_members > $scope.multiAddThreshold) {
                         launchCreateGenericOkModal(
                             "Large Import Warning",
-                            `You are attempting to import ${numMembers} new users to the ${listName} list.
+                            `You are attempting to import ${num_members} new users to the ${listName} list.
                              Imports larger than ${$scope.multiAddThreshold} can take a few minutes.  An email with 
                              the import results will be sent.`,
                             8000);
@@ -560,6 +561,7 @@
             /* Callback: Receive the HTTP response from the server, use console.log(res) to print response */
             let handleSuccessfulAdd = function (res) {
                 $scope.waitingForImportResponse = false; /* Spinner off */
+                console.log(res);
                 for (let i = 0; i < res.length; i++) {
                     $scope.multiAddResults[parseInt(i, 10)] = res[parseInt(i, 10)].person;
                     $scope.multiAddResultsGeneric[parseInt(i, 10)] = res[parseInt(i, 10)].person;
@@ -1399,6 +1401,8 @@
             $scope.setSyncDestInArray(syncDestName, !isSyncDestOn);
             $scope.selectedSyncDest = $scope.getEntireSyncDestInArray(syncDestName);
 
+            console.log($scope.selectedSyncDest);
+
             $scope.syncDestInstance = $uibModal.open({
                 templateUrl: "modal/syncDestModal",
                 scope: $scope,
@@ -1505,7 +1509,7 @@
         /**
          * Converts the data in the table into comma-separated values.
          * @param {object[]} table - the table to convert
-         * @returns string table in CSV format
+         * @returns the table in CSV format
          */
         $scope.convertListToCsv = function (table) {
             let str = "Last,First,Username,uhNumber,Email\r\n";
@@ -1530,10 +1534,11 @@
         $scope.exportGroupToCsvGeneric = function (table, grouping, list) {
 
             table = $scope.multiAddResultsGeneric;
+            console.log(table);
             let data, filename, link;
 
             let csv = $scope.convertListToCsvGeneric(table);
-            if (csv === null) {
+            if (csv == null) {
                 $scope.createApiErrorModal();
                 return;
             }
@@ -1559,6 +1564,7 @@
         $scope.convertListToCsvGeneric = function (table) {
             let str = "";
             for (let i = 0; i < Object.keys(table[0]).length; i++) {
+                console.log(Object.keys(table[0])[i]);
                 str += Object.keys(table[0])[i] + ",";
             }
             str += "\r\n";
@@ -1595,10 +1601,10 @@
             let ca = decodedCookie.split(";");
             for (let i = 0; i < ca.length; i++) {
                 let c = ca[i];
-                while (c.charAt(0) === " ") {
+                while (c.charAt(0) == " ") {
                     c = c.substring(1);
                 }
-                if (c.indexOf(name) === 0)
+                if (c.indexOf(name) == 0)
                     return c.substring(name.length, c.length);
             }
             return "";
@@ -1627,5 +1633,4 @@
     }
 
     UHGroupingsApp.controller("GeneralJsController", GeneralJsController);
-}());
-//})();
+})();

@@ -101,5 +101,4 @@
 
     UHGroupingsApp.controller("MembershipJsController", MembershipJsController);
 
-}());
-//})();
+})();
