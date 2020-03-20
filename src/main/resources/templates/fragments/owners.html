@@ -24,7 +24,6 @@
                 </div>
             </div>
         </div>
-
         <div class="table-responsive">
             <table class="table table-striped table-hover" aria-live="assertive">
                 <thead>
@@ -46,17 +45,17 @@
                 </thead>
                 <tbody>
                 <tr ng-repeat="owner in pagedItemsOwners[currentPageOwners]" class="table table-sm">
-                    <td class="p-10" tabindex="0">
-                        {{owner.name}}
-                        <span class="fa fa-trash-o pull-right clickable pt-1"
-                              data-toggle="tooltip" data-placement="top"
-                              onmouseover="$(this).tooltip('show')" onmouseout="$(this).tooltip('dispose')"
-                              tabindex="0"
-                              th:title="#{screen.message.common.tooltip.remove.owner}"
-                              ng-keypress="$event.keyCode === 13 ? removeOwner(currentPageOwners, $index) : null"
-                              ng-click="removeOwner(currentPageOwners, $index)">
-                    </span>
-                    </td>
+                    <!--<td class="p-10" tabindex="0">-->
+                        <!--{{owner.name}}-->
+                        <!--<span class="fa fa-trash-o pull-right clickable pt-1"-->
+                              <!--data-toggle="tooltip" data-placement="top"-->
+                              <!--onmouseover="$(this).tooltip('show')" onmouseout="$(this).tooltip('dispose')"-->
+                              <!--tabindex="0"-->
+                              <!--th:title="#{screen.message.common.tooltip.remove.owner}"-->
+                              <!--ng-keypress="$event.keyCode === 13 ? removeOwner(currentPageOwners, $index) : null"-->
+                              <!--ng-click="removeOwner(currentPageOwners, $index)">-->
+                        <!--</span>-->
+                    <!--</td>-->
                     <td class="p-10">
                         {{owner.username}}
                         <div ng-if="owner.username === ''">

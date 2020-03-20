@@ -28,6 +28,7 @@
 
                 if (page !== null) {
                     params = params + "page=" + page;
+                    console.log("This is the page",page);
                 }
                 if (size !== null) {
                     if (params !== "") {
@@ -50,7 +51,7 @@
 
                 endpoint = endpoint + params;
                 // console.log(endpoint);
-
+                console.log("This is the getGrouping Endpoint:", endpoint);
 
                 dataProvider.loadData(onSuccess, onError, endpoint);
             },
@@ -73,6 +74,7 @@
              */
             getAdminLists(onSuccess, onError) {
                 let endpoint = BASE_URL + "adminLists";
+                console.log(endpoint);
                 dataProvider.loadData(onSuccess, onError, endpoint);
             },
 
@@ -195,6 +197,7 @@
              */
             removeOwner(path, ownerToRemove, onSuccess, onError) {
                 let endpoint = BASE_URL + path + "/" + ownerToRemove + "/removeOwnership";
+                console.log("The Endpoint:", endpoint);
                 dataProvider.updateData(onSuccess, onError, endpoint);
             },
 
@@ -306,6 +309,19 @@
              */
             getGroupingsOwned(onSuccess, onError) {
                 let endpoint = BASE_URL + "owners/groupings";
+                dataProvider.loadData(onSuccess, onError, endpoint);
+            },
+            /**
+             * Gets the groupings a user owns.
+             */
+            getGroupingsOwnedByUser: function(user, onSuccess, onError) {
+
+                var endpoint = BASE_URL+ "owners/" + user + "/groupings";
+                dataProvider.loadData(onSuccess, onError, endpoint);
+            },
+
+            getGroupingOwners: function(path, onSuccess, onError) {
+                var endpoint = BASE_URL + "groupings/" + path + "owners/";
                 dataProvider.loadData(onSuccess, onError, endpoint);
             }
         };

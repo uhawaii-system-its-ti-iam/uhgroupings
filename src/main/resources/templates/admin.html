@@ -21,6 +21,11 @@
                     Manage Admins
                 </a>
             </li>
+            <li class="nav-item" role="presentation" ng-click="displayOwnedGroupings()">
+                <a href="#manage-owners" data-toggle="tab" class="nav-link" role="tab">
+                    Manage Owners
+                </a>
+            </li>
         </ul>
     </div>
 </div>
@@ -45,8 +50,110 @@
                                    ng-change="filter(groupingsList, 'pagedItemsGroupings', 'currentPageGroupings', groupingsQuery, true)"/>
                         </div>
                     </div>
-                    <div th:replace="fragments/admin-groupings-list :: admin-groupings-list(title='Manage Groupings', tabContent=true)"
-                    ></div>
+                    <div th:replace="fragments/admin-groupings-list :: admin-groupings-list(title='Manage Groupings', tabContent=true)">
+                    </div>
+                </div>
+
+
+
+                <!-- Mange Owners -->
+                <div class="tab-pane fade" id="manage-owners" role="tab">
+                    <div class="row m-auto pt-3 pb-3">
+                        <div class="col-lg-9 col-md-8 col-12 p-0">
+                            <h2 class="card-tile mt-md-1 mt-0 mb-1">Manage Owners</h2>
+                        </div>
+                        <div class="col-lg-3 col-md-4 col-12 p-0">
+                            <form ng-submit="getGroupingsOwned()">
+                                <div class="input-group" style="width: 500px">
+                                    <input class="form-control" placeholder="Search for Groupings owned by User" type="text"
+                                           title="Enter UHID or Username" ng-model="user" style="width: 275px"/>
+                                    <div>
+                                        <button class="btn btn-primary" type="submit" style="margin-left: 2px">Search</button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                        <!--<div class="d-lg-flex d-block justify-content-lg-between justify-content-start">-->
+                        <div class="col-lg-4 pl-0 pr-0 mt-lg-0 mt-2">
+                            <input class="form-control" placeholder="Filter Groupings..." type="text"F
+                                   title="Filter Owners"
+                                   ng-model="ownerQuery"
+                                   ng-change="filter('groupingsOwnedList, 'pagedItemOwners', 'currentPageOwners', ownerQuery, true)"/>
+                            <!--</div>-->
+                        </div>
+                    </div>
+                    <!--<div th:replace="fragments/manage-owners :: manage-owners(title='Manage Owners', tabContent=true)">-->
+                    <!--</div>-->
+                    <div class="table-responsive-sm">
+                        <table class="table manage-owners table-striped table-hover table-md" aria-live="assertive">
+                            <thead>
+                            <tr>
+                                <th ng-click="sortBy('groupingsOwnedList', 'pagedItemsOwners', 'name')" class="clickable">
+                                    Grouping Names
+                                    <i class="fa sort-icon"
+                                       ng-show="columnSort.groupingsOwnedList.property === 'name' || !columnSort.groupingsOwnedList"
+                                       ng-class="{ reverse: columnSort.groupingsOwnedList.reverse }"></i>
+                                </th>
+                                <th class="clickable" scope="col">
+                                    <!--                    # of Members-->
+                                </th>
+                                <th ng-click="sortBy('groupingsOwnedList', 'pagedItemsOwners', 'path')" class="clickable d-none d-md-table-cell">
+                                    Grouping Path
+                                    <i class="fa sort-icon" ng-show="columnSort.groupingsOwnedList.property === 'path'"
+                                       ng-class="{ reverse: columnSort.groupingsOwnedList.reverse }"></i>
+                                </th>
+                                <th>
+                                    # of Owners
+                                    <i class="fa sort-icon"></i>
+                                </th>
+                            </tr>
+                            </thead>
+                            <tbody class="table table-borderless">
+                            <tr ng-repeat="l in pagedItemsOwners[currentPageOwners] ">
+                                <td class="p-10 clickable align-middle" tabindex="0"
+                                    ng-keypress="$event.keyCode === 13 ? displayGrouping(currentPageOwners, $index) : null"
+                                    ng-click="displayGrouping(currentPageOwners, $index)">
+                                    <i class="fa fa-fw fa-pencil-square-o" aria-hidden="true"></i>
+                                    {{l.name}}
+                                </td>
+                                <td>
+                                </td>
+                                <td class="p-10 d-none d-md-table-cell">
+                                    <form class="seamless border border-secondary rounded">
+                                        <input aria-label="Grouping Path" type="text" class="form-control form-control-sm border-0"
+                                               value={{l.path}}
+                                               id={{l.path}}>
+                                        <button class="btn btn-sm" aria-label="Copy Path Button" ng-click=copyPath(l.path)>
+                                            <i class="fa fa-fw fa-clipboard" aria-hidden="true"></i></button>
+                                    </form>
+                                </td>
+                                <td class="p-10 d-none d-md-table-cell">
+                                    {{l.path}}
+                                </td>
+                                <td class="p-10 clickable align-right">
+                    <span class="fa fa-trash-o pull-right clickable pt-1"
+                          data-toggle="tooltip" data-placement="top"
+                          onmouseover="$(this).tooltip('show')" onmouseout="$(this).tooltip('dispose')"
+                          tabindex="0"
+                          th:title="#{screen.message.common.tooltip.remove.owner}"
+                          ng-keypress="$event.keyCode === 13 ? removeOwner({{$scope}}, {{$scope.user}} ,currentPageOwners, $index) : null"
+                          ng-click="removeOwner( currentPageOwners, $index)">
+                    </span>
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                        <div th:replace="fragments/pagination :: pagination(currentPage='currentPageOwners', pagedItems='pagedItemsOwners')"></div>
+                    </div>
+
+
+
+
+
+
+
                 </div>
                 <!-- Manage Admins -->
                 <div class="tab-pane fade" id="manage-admins" role="tab">

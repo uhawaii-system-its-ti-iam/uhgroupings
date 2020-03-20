@@ -35,7 +35,7 @@
 
         $scope.copyPath = function (grouping) {
             var copyText = document.getElementById(grouping.path);
-
+            console.log(JSON.stringify((grouping)));
             copyText.select();
             document.execCommand("copy");
 

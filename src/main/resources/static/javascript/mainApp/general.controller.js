@@ -1030,7 +1030,7 @@
          */
         $scope.removeOwner = function (currentPage, index) {
             const ownerToRemove = $scope.pagedItemsOwners[currentPage][index];
-
+            console.log("removing owner");
             if ($scope.groupingOwners.length > 1) {
                 $scope.createRemoveModal({
                     user: ownerToRemove,
@@ -1108,8 +1108,13 @@
 
             $scope.removeModalInstance.result.then(function () {
                 $scope.loading = true;
-                let userToRemove = options.user.username;
-                let groupingPath = $scope.selectedGrouping.path;
+
+                var userToRemove = options.user.username;
+
+                // groupingPath should only be defined if listName is not "admins"
+                if ($scope.listName != "admins") {
+                    groupingPath = $scope.selectedGrouping.path;
+                }
 
                 if ($scope.listName === "Include") {
                     groupingsService.removeMemberFromInclude(groupingPath, userToRemove, handleMemberRemove, handleUnsuccessfulRequest);
