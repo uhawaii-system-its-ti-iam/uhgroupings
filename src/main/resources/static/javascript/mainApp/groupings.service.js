@@ -168,7 +168,7 @@
              * @param onError
              */
             removeMemberFromInclude(path, member, onSuccess, onError) {
-                let endpoint = BASE_URL + path + "/" + member + "/deleteMemberFromIncludeGroup";
+                let endpoint = BASE_URL + path + "/" + member + "/removeMembersFromIncludeGroup";
                 dataProvider.updateData(onSuccess, onError, endpoint);
             },
             /**
@@ -179,7 +179,7 @@
              * @param onError
              */
             removeMemberFromExclude(path, member, onSuccess, onError) {
-                let endpoint = BASE_URL + path + "/" + member + "/deleteMemberFromExcludeGroup";
+                let endpoint = BASE_URL + path + "/" + member + "/removeMembersFromExcludeGroup";
                 dataProvider.updateData(onSuccess, onError, endpoint);
             },
 
