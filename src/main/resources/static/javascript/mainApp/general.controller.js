@@ -72,6 +72,8 @@
         $scope.groupingCSV = [];
         $scope.groupNameCSV = [];
 
+        let CURRENT_PAGE = 0;
+
 
         // used with ng-view on selected-grouping.html to toggle description editing.
         $scope.descriptionForm = false;
@@ -131,9 +133,7 @@
             });
 
             // Unique members only by UUID (assume no two users should have the same uuid)
-            members = _.uniqBy(members, "uhUuid");
-
-            return _.sortBy(members, "name");
+            return _.uniqBy(members, "uhUuid");
         }
 
         /**
@@ -146,13 +146,8 @@
             _.remove(membersToAdd, function (member) {
                 return _.isEmpty(member.username);
             });
-
-            var newMembers = _.concat(initialMembers, membersToAdd);
-
             // Unique members only by UUID (assume no two users should have the same uuid)
-            newMembers = _.uniqBy(newMembers, "uhUuid");
-
-            return _.sortBy(newMembers, "name");
+            return _.uniqBy(_.concat(initialMembers, membersToAdd), "uhUuid");
         };
 
         /**
@@ -171,11 +166,91 @@
             });
         };
 
+        function launchOwnerErrorModal() {
+            return (res) => {
+                if (res.statusCode === 403) {
+                    $scope.createOwnerErrorModal();
+                }
+            };
+        }
+
+        function getGroupingOnSuccess(res) {
+            $scope.loading = false;
+            $scope.groupingBasis = combineGroupMembers($scope.groupingBasis, res.basis.members);
+            $scope.filter($scope.groupingBasis, "pagedItemsBasis", "currentPageBasis", $scope.basisQuery, true);
+
+            //Gets members in the include group
+            $scope.groupingInclude = combineGroupMembers($scope.groupingInclude, res.include.members);
+            $scope.addInBasis($scope.groupingInclude);
+            $scope.filter($scope.groupingInclude, "pagedItemsInclude", "currentPageInclude", $scope.includeQuery, true);
+
+            //Gets members in the exclude group
+            $scope.groupingExclude = combineGroupMembers($scope.groupingExclude, res.exclude.members);
+            $scope.addInBasis($scope.groupingExclude);
+            $scope.filter($scope.groupingExclude, "pagedItemsExclude", "currentPageExclude", $scope.excludeQuery, true);
+
+            //Gets members in grouping
+            let size = $scope.groupingMembers.length;
+            $scope.groupingMembers = combineGroupMembers($scope.groupingMembers, res.composite.members);
+            $scope.addWhereListed($scope.groupingMembers);
+            $scope.filter($scope.groupingMembers, "pagedItemsMembers", "currentPageMembers", $scope.membersQuery, true);
+
+            //Gets owners of the grouping
+            $scope.groupingOwners = combineGroupMembers($scope.groupingOwners, res.owners.members);
+            $scope.pagedItemsOwners = $scope.groupToPages($scope.groupingOwners);
+            $scope.filter($scope.groupingOwners, "pagedItemsOwners", "currentPageMembers", $scope.ownersQuery, true);
+
+            // Gets the description go the group
+
+            //increments page to load and allows members to iteratively be loaded
+            loadMembersList = true;
+            const path = $scope.selectedGrouping.path;
+            if (size < $scope.groupingMembers.length) {
+                CURRENT_PAGE++;
+                $scope.paginatingProgress = true;
+                groupingsService.getGrouping(
+                    path,
+                    CURRENT_PAGE,
+                    PAGE_SIZE,
+                    "name",
+                    true,
+                    getGroupingOnSuccess,
+                    launchOwnerErrorModal
+                );
+            } else {
+                $scope.paginatingProgress = false;
+                $scope.paginatingComplete = true;
+            }
+        }
+
+        $scope.getGroupingInformation = () => {
+            $scope.loading = true;
+            $scope.paginatingComplete = false;
+            const path = $scope.selectedGrouping.path;
+            groupingsService.getGroupingMetaData(path, (res) => {
+                    $scope.loading = false;
+                    $scope.allowOptIn = res.optInOn;
+                    $scope.allowOptOut = res.optOutOn;
+                    $scope.syncDestArray = res.syncDestinations;
+                    CURRENT_PAGE++;
+                    if (res.description === null) {
+                        groupingDescription = "";
+                    } else {
+                        groupingDescription = res.description;
+                        displayTracker = 1;
+                    }
+                },
+                launchOwnerErrorModal
+            );
+            CURRENT_PAGE++;
+            groupingsService.getGrouping(path, CURRENT_PAGE, PAGE_SIZE, "name", true,
+                getGroupingOnSuccess, launchOwnerErrorModal);
+        };
         /**
          * Gets information about the grouping, such as its members and the preferences set.
          * Retrieves information asynchronously page by page
          */
-        $scope.getGroupingInformation = function () {
+        $scope.getGroupingInformationi = function () {
             //creates loading screen
             $scope.loading = true;
             $scope.paginatingComplete = false;
@@ -496,8 +571,6 @@
         $scope.addMembers = function (listName) {
             $scope.listName = listName;
             let numMembers = ($scope.usersToAdd.split(" ").length - 1);
-
-
             if (numMembers > 0) {
                 let users = $scope.usersToAdd.split(/[ ,]+/).join(",");
 
@@ -574,21 +647,12 @@
                 $scope.launchMultiAddResultModal(listName);
             };
             $scope.waitingForImportResponse = true; /* Spinner on */
-
-            let fun = "addMembersTo";
-            await groupingsService[(listName === "Include") ? (fun + "Include") : (fun + "Exclude")]
-            (groupingPath, list, handleSuccessfulAdd, handleUnsuccessfulRequest, timeoutModal);
-
-
-            /*
-             if (listName === "Include")
-                 await groupingsService.addMembersToInclude(groupingPath, list, handleSuccessfulAdd,
-                     handleUnsuccessfulRequest, timeoutModal);
-             else if (listName === "Exclude")
-                 await groupingsService.addMembersToExclude(groupingPath, list, handleSuccessfulAdd,
-                     handleUnsuccessfulRequest, timeoutModal);
-
-             */
+            await groupingsService["addMembersTo" + listName](
+                groupingPath,
+                list,
+                handleSuccessfulAdd,
+                handleUnsuccessfulRequest,
+                timeoutModal);
         };
 
         /**
@@ -696,29 +760,22 @@
          * @param {string} list - the list the user is being added to (either Include or Exclude)
          */
         $scope.addMember = function (list) {
-            let groupingPath = $scope.selectedGrouping.path;
-            groupingsService.getGrouping(groupingPath, 1, PAGE_SIZE, "name", true, function () {
-                let user = $scope.userToAdd;
-                let inBasis = _.some($scope.groupingBasis, { username: user });
-                if (_.isEmpty(user)) {
-                    $scope.createAddErrorModal(user);
-                } else if ($scope.existInList(user, list)) {
-                    $scope.createCheckModal(user, list, false, inBasis);
-                } else if ($scope.isInAnotherList(user, list)) {
-                    $scope.createCheckModal(user, list, true, inBasis);
-                } else if ((inBasis && list === "Include") || (!inBasis && list === "Exclude")) {
-                    $scope.createBasisWarningModal(user, list, inBasis);
-                } else {
-                    $scope.createConfirmAddModal({
-                        userToAdd: user,
-                        listName: list
-                    });
-                }
-            }, function (res) {
-                if (res.statusCode === 403) {
-                    $scope.createOwnerErrorModal();
-                }
-            });
+            let user = $scope.userToAdd;
+            let inBasis = _.some($scope.groupingBasis, { username: user });
+            if (_.isEmpty(user)) {
+                $scope.createAddErrorModal(user);
+            } else if ($scope.existInList(user, list)) {
+                $scope.createCheckModal(user, list, false, inBasis);
+            } else if ($scope.isInAnotherList(user, list)) {
+                $scope.createCheckModal(user, list, true, inBasis);
+            } else if ((inBasis && list === "Include") || (!inBasis && list === "Exclude")) {
+                $scope.createBasisWarningModal(user, list, inBasis);
+            } else {
+                $scope.createConfirmAddModal({
+                    userToAdd: user,
+                    listName: list
+                });
+            }
         };
 
         /**
