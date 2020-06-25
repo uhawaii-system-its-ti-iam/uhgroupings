@@ -352,11 +352,60 @@ public class GroupingsRestController {
      */
     @PostMapping(value = "/groupings/{path}/includeMembers/{uid}")
     public ResponseEntity deleteMemberFromIncludeGroup(Principal principal,
+<<<<<<< HEAD
             @PathVariable String path,
             @PathVariable String uid) {
         logger.info("Entered REST removeMembersFromIncludeGroup...");
         String uri = String.format(API_2_1_BASE + "/groupings/%s/includeMembers/%s", policy.sanitize(path),
                 policy.sanitize(uid));
+||||||| 995d0ff0
+            @PathVariable String grouping,
+            @PathVariable String userToDelete) {
+        logger.info("Entered REST deleteMemberFromIncludeGroup...");
+
+        String safeGrouping = policy.sanitize(grouping);
+        String safeUserToDelete = policy.sanitize(userToDelete);
+
+        String uri = String.format(API_2_1_BASE + "/groupings/%s/includeMembers/%s", safeGrouping, safeUserToDelete);
+        return httpRequestService.makeApiRequest(principal.getName(), uri, HttpMethod.DELETE);
+    }
+
+    @PostMapping(value = "/{grouping}/{usersToDelete}/deleteMembersFromIncludeGroup")
+    public ResponseEntity deleteMembersFromIncludeGroup(Principal principal,
+            @PathVariable String grouping,
+            @PathVariable String usersToDelete) {
+
+        String safeGrouping = policy.sanitize(grouping);
+        String safeUserToDelete = policy.sanitize(usersToDelete);
+
+        logger.info("Entered REST deleteMembersFromIncludeGroup...");
+        String uri =
+                String.format(API_2_1_BASE + "/groupings/%s/includeMultipleMembers/%s", safeGrouping, safeUserToDelete);
+=======
+            @PathVariable String path,
+            @PathVariable String uid) {
+        logger.info("Entered REST removeMembersFromIncludeGroup...");
+        String uri = String.format(API_2_1_BASE + "/groupings/%s/includeMembers/%s", policy.sanitize(path),
+                policy.sanitize(uid));
+        return httpRequestService.makeApiRequest(principal.getName(), uri, HttpMethod.DELETE);
+    }
+
+    /**
+     * Removes multiple members in the exclude group of the Grouping who's path is in 'grouping'
+     *
+     * @param principal
+     * @param path - Path to the Grouping whose include group contains the members to be deleted.
+     * @param membersToRemove - The list of members to remove.
+     * @return - Information about the success of the operation.
+     */
+    @PostMapping(value = "/groupings/{path}/removeIncludeMembers/{uid}")
+    public ResponseEntity removeMembersFromIncludeGroup(Principal principal,
+            @PathVariable String path,
+            @PathVariable String membersToRemove) {
+        logger.info("Entered REST removeMembersFromIncludeGroup...");
+        String uri = String.format(API_2_1_BASE + "/groupings/%s/includeMembers/%s", policy.sanitize(path),
+                policy.sanitize(membersToRemove));
+>>>>>>> dd0c13588d88bf25064e424934e204dd53f0a812
         return httpRequestService.makeApiRequest(principal.getName(), uri, HttpMethod.DELETE);
     }
 
@@ -369,11 +418,59 @@ public class GroupingsRestController {
      */
     @PostMapping(value = "/groupings/{path}/excludeMembers/{uid}")
     public ResponseEntity deleteMemberFromExcludeGroup(Principal principal,
+<<<<<<< HEAD
             @PathVariable String path,
             @PathVariable String uid) {
         logger.info("Entered REST removeMembersFromExcludeGroup...");
         String uri = String.format(API_2_1_BASE + "/groupings/%s/excludeMembers/%s", policy.sanitize(path),
                 policy.sanitize(uid));
+||||||| 995d0ff0
+            @PathVariable String grouping,
+            @PathVariable String userToDelete) {
+
+        String safeGrouping = policy.sanitize(grouping);
+        String safeUserToDelete = policy.sanitize(userToDelete);
+
+        logger.info("Entered REST deleteMemberFromExcludeGroup...");
+        String uri = String.format(API_2_1_BASE + "/groupings/%s/excludeMembers/%s", safeGrouping, safeUserToDelete);
+        return httpRequestService.makeApiRequest(principal.getName(), uri, HttpMethod.DELETE);
+    }
+
+    @PostMapping(value = "/{grouping}/{usersToDelete}/deleteMembersFromExcludeGroup")
+    public ResponseEntity deleteMembersFromExcludeGroup(Principal principal,
+            @PathVariable String grouping,
+            @PathVariable String usersToDelete) {
+
+        String safeGrouping = policy.sanitize(grouping);
+        String safeUserToDelete = policy.sanitize(usersToDelete);
+
+        logger.info("Entered REST deleteMembersFromExcludeGroup...");
+        String uri =
+                String.format(API_2_1_BASE + "/groupings/%s/excludeMultipleMembers/%s", safeGrouping, safeUserToDelete);
+=======
+            @PathVariable String path,
+            @PathVariable String uid) {
+        logger.info("Entered REST removeMembersFromExcludeGroup...");
+        String uri = String.format(API_2_1_BASE + "/groupings/%s/excludeMembers/%s", policy.sanitize(path),
+                policy.sanitize(uid));
+        return httpRequestService.makeApiRequest(principal.getName(), uri, HttpMethod.DELETE);
+    }
+
+    /**
+     * Removes multiple members in the exclude group of the Grouping who's path is in 'grouping'
+     * @param principal
+     * @param path Path to the Grouping whose include group contains the members to be deleted.
+     * @param membersToRemove - The list of members to remove.
+     * @return - Information about the success of the operation.
+     */
+    @PostMapping(value = "groupings/{path}/removeExcludeMembers/{uid}")
+    public ResponseEntity removeMembersFromExcludeGroup(Principal principal,
+            @PathVariable String path,
+            @PathVariable String membersToRemove) {
+        logger.info("Entered REST removeMembersFromExcludeGroup...");
+        String uri = String.format(API_2_1_BASE + "/groupings/%s/excludeMembers/%s", policy.sanitize(path),
+                policy.sanitize(membersToRemove));
+>>>>>>> dd0c13588d88bf25064e424934e204dd53f0a812
         return httpRequestService.makeApiRequest(principal.getName(), uri, HttpMethod.DELETE);
     }
 
