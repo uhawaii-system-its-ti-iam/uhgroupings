@@ -8,14 +8,14 @@
 </div>
 <div class="modal-body" id="modal-body">
     <p>
-        <span style="color: black">The following users will be removed from the </span>
+        <span style="color: black">The following members will be removed from the </span>
         <span style="color: black;">{{listName}} list.</span>
     </p>
     <div class="container">
         <table>
             <thead class="import-table-thead-tbody-tr import-table-thead">
             <tr class="import-table-thead-tbody-tr" style="white-space: nowrap;width: 80%">
-                <td>UH ID No.</td>
+                <td>UH Number</td>
                 <td>UH Username</td>
                 <td>Full Name</td>
             </tr>
@@ -29,6 +29,7 @@
             </tbody>
         </table>
     </div>
+    <p>The following members identified with either UH username or UH number do not exist in the group and will not be removed: </p>
 </div>
 <div class="modal-footer">
     <button class="btn btn-primary" ng-click="multiRemovePromptModalAccept()">Ok</button>
