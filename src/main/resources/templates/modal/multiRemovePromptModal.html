@@ -29,7 +29,11 @@
             </tbody>
         </table>
     </div>
-    <p style="padding-top: 10px">Members with UH username or UH number that do not exist in the group: </p>
+    <p style="padding-top: 10px; color: red"
+       ng-if="containsInvalidMembers">
+        Members with UH username or UH number that do not exist in the {{listName}} group and will not be removed:
+        {{membersNotInList.join(", ")}}
+    </p>
 </div>
 <div class="modal-footer">
     <button class="btn btn-primary" ng-click="multiRemovePromptModalAccept()">Ok</button>

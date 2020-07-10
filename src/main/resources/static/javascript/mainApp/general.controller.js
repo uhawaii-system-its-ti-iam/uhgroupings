@@ -31,6 +31,10 @@
 
         $scope.membersToModify = [];
 
+        $scope.membersNotInList = [];
+
+        $scope.containsInvalidMembers = false;
+
         $scope.itemsAlreadyInList = [];
         $scope.itemsInOtherList = [];
 
@@ -1089,7 +1093,7 @@
         };
 
         /**
-         * Returns the member object that contains either the provided username or UH ID number.
+         * Returns the member object that contains either the provided username or UH number.
          * @param memberIdentifier - The username or UH ID number of the member object to return.
          * @param currentPage - An array that contains member objects on the current page.
          */
@@ -1300,6 +1304,9 @@
         /**
          * Utility function that searches an array of member objects, and
          * creates an new array of member objects from a string of member identifiers.
+         *
+         * If a member that does not exist, it creates a string of their identifiers.
+         *
          * @param members - A comma separated string of members.
          */
         function fetchMemberProperties(members) {
@@ -1316,7 +1323,13 @@
             }
             let arrayOfMembers = members.split(",");
             for (let member of arrayOfMembers) {
-                $scope.multiRemoveResults.push(returnMemberObjectFromUserIdentifier(member, listToSearch));
+                let currentMember = returnMemberObjectFromUserIdentifier(member, listToSearch);
+                if (currentMember === undefined) {
+                    $scope.containsInvalidMembers = true;
+                    $scope.membersNotInList.push(member);
+                } else {
+                    $scope.multiRemoveResults.push(currentMember);
+                }
             }
         }
 
@@ -1449,6 +1462,8 @@
                     $scope.multiRemoveResultsGeneric = [];
                     $scope.membersToModify = [];
                     $scope.membersToAddOrRemove = "";
+                    $scope.membersNotInList = [];
+                    $scope.containsInvalidMembers = false;
                     break;
                 case "owners":
                     $scope.ownerToAdd = "";
