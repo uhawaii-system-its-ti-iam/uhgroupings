@@ -1370,7 +1370,6 @@
             });
             $scope.multiRemoveConfirmationModalInstance.result.finally(function () {
                 clearMemberInput(listName);
-                console.log($scope.membersInCheckboxList);
                 $scope.loading = true;
                 if ($scope.listName === "admins") {
                     $scope.init();
@@ -1383,6 +1382,13 @@
         $scope.closeMultiRemoveConfirmationModalInstance = function () {
             $scope.multiRemoveConfirmationModalInstance.close();
         };
+
+        // Small function that resets the checkboxes on the page
+        function resetCheckboxes() {
+            for (let member in $scope.membersInCheckboxList) {
+                member = false;
+            }
+        }
 
         /**
          * Resets the grouping members and page numbers.
@@ -1465,6 +1471,10 @@
                     $scope.membersToAddOrRemove = "";
                     $scope.membersNotInList = [];
                     $scope.containsInvalidMembers = false;
+                    $scope.memberName = "";
+                    $scope.memberUhUuid = "";
+                    resetCheckboxes();
+                    console.log("EXCLUDE!");
                     break;
                 case "owners":
                     $scope.ownerToAdd = "";
