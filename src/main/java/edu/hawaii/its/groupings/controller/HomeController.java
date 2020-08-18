@@ -34,8 +34,10 @@ public class HomeController {
 
     // Mapping to home.
     @RequestMapping(value = { "/", "/home" }, method = { RequestMethod.GET })
-    public String home(Map<String, Object> model, Locale locale) {
+    public String home(Model model, Locale locale) {
         logger.info("User at home. The client locale is " + locale);
+        model.addAttribute("showGateMessage", Boolean.TRUE);
+        model.addAttribute("gateMessage", "What is the What?");
         return "home";
     }
 
