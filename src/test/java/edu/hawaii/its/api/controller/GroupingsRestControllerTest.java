@@ -74,13 +74,9 @@ public class GroupingsRestControllerTest {
 
     }
 
-    // TODO: the URLs being called are matching any String, but they should be changed to the specific URL that the API
-    // is using. Maybe this can be done by using the openApiSpecification file.
-
     @Test
     @WithMockUhUser
     public void getGrouping() throws Exception {
-        //        String uri = REST_CONTROLLER_BASE + GROUPING + "/grouping";
         String uri = REST_CONTROLLER_BASE + "groupings/" + GROUPING;
 
         given(httpRequestService.makeApiRequest(eq(USERNAME), anyString(), eq(HttpMethod.GET)))
@@ -88,7 +84,6 @@ public class GroupingsRestControllerTest {
 
         mockMvc.perform(get(uri))
                 .andExpect(status().isOk());
-
     }
 
     @Test

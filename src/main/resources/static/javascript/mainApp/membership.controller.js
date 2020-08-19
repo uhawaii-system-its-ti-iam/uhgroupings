@@ -8,7 +8,7 @@
      * @param dataProvider - service that handles redirection to the feedback page upon error
      * @param groupingsService - service for creating requests to the groupings API
      */
-    function MembershipJsController($scope, $window, $controller, groupingsService, dataProvider) {
+    function MembershipJsController($scope, $window, $controller, groupingsService, dataProvider, Message) {
 
         $scope.membershipsList = [];
         $scope.pagedItemsMemberships = [];
@@ -57,14 +57,6 @@
             if (_.startsWith(res[0].resultCode, "SUCCESS")) {
                 $scope.init();
             }
-        }
-
-        /**
-         * Generic handler for an unsuccessful opt into/out of a grouping.
-         * @param {object} res - the response from the request
-         */
-        function handleUnsuccessfulOpt(res) {
-            console.log("Error opting into grouping: " + res.statusCode);
         }
 
         /**

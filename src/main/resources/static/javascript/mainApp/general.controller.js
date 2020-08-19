@@ -10,7 +10,7 @@
      * @param groupingsService - service for creating requests to the groupings API
      */
 
-    function GeneralJsController($scope, $window, $uibModal, $controller, groupingsService, dataProvider, PAGE_SIZE) {
+    function GeneralJsController($scope, $window, $uibModal, $controller, groupingsService, dataProvider, PAGE_SIZE, Message) {
 
         $scope.userToAdd = "";
         $scope.usersToAdd = "";
@@ -180,9 +180,7 @@
         $scope.getAllSyncDestinations = function () {
             const groupingPath = $scope.selectedGrouping.path;
             groupingsService.getSyncDestList(groupingPath, function (res) {
-                // console.log("This is the response of sync dest" + res);
                 $scope.syncDestMap = res;
-                // console.log("Mapping:"+ $scope.syncDestMap);
             }, function (res) {
                 if (res.statusCode === 403) {
                     $scope.createOwnerErrorModal();
@@ -279,13 +277,11 @@
 
                             //Catches in both fetch and response
                         } catch (error) {
-                            console.log("Getting members from grouping has errored out please reload page to resume. If not please proceed to the feedback page and report the problem you have come across.");
                         }
                         currentPage++;
                     }
-                }, function (res) {
+                }, function () {
                     $scope.loading = false;
-                    console.log("There was an error in Grouper, refresh the page.");
                     $scope.createApiErrorModal();
                 });
                 //Will only decrement threadcount if previous call absolutely finishes
@@ -362,7 +358,6 @@
                         $scope.createOwnerErrorModal();
                     } else {
                         $scope.loading = false;
-                        console.log("There was an error in Grouper, refresh the page.");
                         $scope.createApiErrorModal();
                         // dataProvider.handleException({ exceptionMessage: JSON.stringify(res, null, 4) }, "feedback/error", "feedback");
                     }
@@ -416,29 +411,25 @@
         };
 
         /**
-         * Sets a new description for a Grouping.
-         * TODOS:   --> make this function call RestController to change the description in Grouper.
-         *          --> error checking?
+         * Set a new description for a Grouping.
          */
         $scope.saveDescription = function () {
-            if (groupingDescription.localeCompare($scope.modelDescription) !== 0) {
-                groupingDescription = $scope.modelDescription;
-
-                groupingsService.updateDescription($scope.selectedGrouping.path,
-                    function () {
-                        // This is currently empty due to not needing to do anything with a successful response
-                    },
-                    function (res) {
-                        if (res.status === 403) {
-                            $scope.createOwnerErrorModal();
-                        }
-                    },
-                    groupingDescription);
-                $scope.descriptionForm = !($scope.descriptionForm);
-            } else {
-                $scope.cancelDescriptionEdit();
+            if (groupingDescription.localeCompare($scope.modelDescription) === 0) {
+                return $scope.cancelDescriptionEdit();
             }
+            groupingDescription = $scope.modelDescription;
 
+            groupingsService.updateDescription($scope.selectedGrouping.path,
+                function () {
+                    //Do Nothing
+                },
+                function (res) {
+                    if (res.status === 403) {
+                        $scope.createOwnerErrorModal();
+                    }
+                },
+                groupingDescription);
+            $scope.descriptionForm = !($scope.descriptionForm);
         };
 
         /**
@@ -527,14 +518,14 @@
                     let users = $scope.usersToAdd.split(/[ ,]+/).join(",");
                     $scope.usersToAdd = [];
                     if (numMembers > $scope.maxImport) {
-                        launchCreateGenericOkModal(
-                            "Out of Bounds Import Warning",
+                        launchDynamicModal(
+                            Message.Title.IMPORT_OUT_OF_BOUNDS,
                             `Importing more than ${$scope.maxImport} users is not allowed.`,
                             8000);
                     } else {
                         if (numMembers > $scope.multiAddThreshold) {
-                            launchCreateGenericOkModal(
-                                "Large Import Warning",
+                            launchDynamicModal(
+                                Message.Title.LARGE_IMPORT,
                                 `You are attempting to import ${numMembers} new users to the ${listName} list.
                              Imports larger than ${$scope.multiAddThreshold} can take a few minutes.  An email with 
                              the import results will be sent.`,
@@ -575,18 +566,15 @@
         $scope.addMultipleMembers = async function (list, listName) {
             let groupingPath = $scope.selectedGrouping.path;
 
-            /* Callback: Return a modal which is launched after n seconds, see updateDataWithTimeoutModal() in app.service.js */
             let timeoutModal = function () {
-                return launchCreateGenericOkModal(
-                    "Slow Import Warning",
-                    `This import could take awhile to complete. The process however does not require the browser 
-                    to be open in order to finish.`,
+                return launchDynamicModal(
+                    Message.Title.SLOW_IMPORT,
+                    Message.Body.SLOW_IMPORT,
                     8000);
             };
 
-            /* Callback: Receive the HTTP response from the server, use console.log(res) to print response */
             let handleSuccessfulAdd = function (res) {
-                $scope.waitingForImportResponse = false; /* Spinner off */
+                $scope.waitingForImportResponse = false;
                 for (let i = 0; i < res.length; i++) {
                     $scope.multiAddResults[i] = res[i].person;
                     $scope.multiAddResultsGeneric[i] = res[i].person;
@@ -670,23 +658,27 @@
         };
 
         /**
-         * Launch a modal with a title, body message, and an ok button which closes the modal.
+         * Launch a modal with a title, and body message. The modal will dismiss in the case of pressing the ok button
+         * and/or if the timeTillClose is set and time runs out. The modal will timeout unless the timeTillClose is
+         * set. Unless the title and/or body * string being passed contains arbitrary values determined at runtime then
+         * the string should be stored and * accessed through MODAL_MESSAGES in app.constants.js.
+         *
          * @param title - message title to be displayed in modal header
          * @param body - message body to be displayed in modal body
          * @param timeTillClose - Millisecond till modal is modal is automatically closed.
          */
-        function launchCreateGenericOkModal(title, body, timeTillClose) {
+        function launchDynamicModal(title, body, timeTillClose) {
             $scope.currentModalTitle = title;
             $scope.currentModalBody = body;
 
-            $scope.createGenericOkModal = $uibModal.open({
-                templateUrl: "modal/genericOkModal",
+            $scope.createDynamicModal = $uibModal.open({
+                templateUrl: "modal/dynamicModal",
                 scope: $scope
             });
 
             if (undefined !== timeTillClose) {
                 let closeOnTimeout = function () {
-                    $scope.createGenericOkModal.dismiss();
+                    $scope.createDynamicModal.dismiss();
                 };
                 setTimeout(closeOnTimeout, timeTillClose);
             }
@@ -1185,7 +1177,6 @@
             $scope.memberUsername = options.user.username;
             $scope.memberName = options.user.name;
             $scope.memberUhUuid = options.user.uhUuid;
-
             const windowClass = $scope.showWarningRemovingSelf() ? "modal-danger" : "";
 
             $scope.removeModalInstance = $uibModal.open({
@@ -1342,6 +1333,9 @@
             if (response.groupingsServiceResult.resultCode === "SUCCESS") {
                 $scope.launchMultiRemoveConfirmationModal($scope.listName);
             }
+            groupingsService.removeMembersFromInclude($scope.selectedGrouping.path, list, function () {
+            }, function () {
+            });
         };
 
         /**
@@ -1545,12 +1539,9 @@
          */
         function handleSuccessfulPreferenceToggle(res) {
             if (!_.isUndefined(res.statusCode)) {
-                console.log("Error, Status Code: " + res.statusCode);
                 $scope.createPreferenceErrorModal();
-            } else if (_.startsWith(res.resultCode, "SUCCESS")) {
-                console.log("Success");
             }
-        };
+        }
 
         /**
          * Toggles the grouping preference which allows users to opt out of a grouping.
