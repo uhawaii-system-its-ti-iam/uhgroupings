@@ -1188,18 +1188,18 @@
             });
 
             $scope.removeModalInstance.result.then(function () {
-                let memberToRemoveUsername = options.user.username;
                 $scope.loading = true;
+                let memberToRemove = options.user.uhUuid;
                 let groupingPath = $scope.selectedGrouping.path;
 
                 if ($scope.listName === "Include") {
-                    groupingsService.removeMemberFromInclude(groupingPath, memberToRemoveUsername, handleMemberRemove, handleUnsuccessfulRequest);
+                    groupingsService.removeMemberFromInclude(groupingPath, memberToRemove, handleMemberRemove, handleUnsuccessfulRequest);
                 } else if ($scope.listName === "Exclude") {
-                    groupingsService.removeMemberFromExclude(groupingPath, memberToRemoveUsername, handleMemberRemove, handleUnsuccessfulRequest);
+                    groupingsService.removeMemberFromExclude(groupingPath, memberToRemove, handleMemberRemove, handleUnsuccessfulRequest);
                 } else if ($scope.listName === "owners") {
-                    groupingsService.removeOwner(groupingPath, memberToRemoveUsername, handleOwnerRemove, handleUnsuccessfulRequest);
+                    groupingsService.removeOwner(groupingPath, memberToRemove, handleOwnerRemove, handleUnsuccessfulRequest);
                 } else if ($scope.listName === "admins") {
-                    groupingsService.removeAdmin(memberToRemoveUsername, handleAdminRemove, handleUnsuccessfulRequest);
+                    groupingsService.removeAdmin(memberToRemove, handleAdminRemove, handleUnsuccessfulRequest);
                 }
             });
         };
