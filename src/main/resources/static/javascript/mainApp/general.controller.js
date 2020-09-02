@@ -1467,6 +1467,7 @@
                     $scope.containsInvalidMembers = false;
                     $scope.memberName = "";
                     $scope.memberUhUuid = "";
+                    $scope.membersNotInList = [];
                     resetCheckboxes();
                     console.log("EXCLUDE!");
                     break;
