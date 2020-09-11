@@ -1288,7 +1288,7 @@
                 ($scope.selectedGrouping.path, membersToRemove, $scope.multiMemberRemoveResponseHandler, handleUnsuccessfulRequest);
             }, function (reason) {
                 if (reason === "cancel") {
-                    clearMemberInput(listName);
+                    clearMemberInput();
                 }
             });
         }
