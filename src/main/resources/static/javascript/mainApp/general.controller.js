@@ -1201,6 +1201,7 @@
                 } else if ($scope.listName === "admins") {
                     groupingsService.removeAdmin(memberToRemove, handleAdminRemove, handleUnsuccessfulRequest);
                 }
+                clearMemberInput($scope.listName);
             });
         };
 
@@ -1288,7 +1289,7 @@
                 ($scope.selectedGrouping.path, membersToRemove, $scope.multiMemberRemoveResponseHandler, handleUnsuccessfulRequest);
             }, function (reason) {
                 if (reason === "cancel") {
-                    clearMemberInput();
+                    clearMemberInput(listName);
                 }
             });
         }
@@ -1469,7 +1470,6 @@
                     $scope.memberUhUuid = "";
                     $scope.membersNotInList = [];
                     resetCheckboxes();
-                    console.log("EXCLUDE!");
                     break;
                 case "owners":
                     $scope.ownerToAdd = "";

@@ -29,8 +29,8 @@
             </tbody>
         </table>
     </div>
-    <p style="padding-top: 10px; color: red"
-       ng-if="containsInvalidMembers">
+    <p ng-model="containsInvalidMembers" ng-if="containsInvalidMembers"
+       style="padding-top: 10px; color: red">
         Members with UH username or UH number that do not exist in the {{listName}} group and will not be removed:
         {{membersNotInList.join(", ")}}
     </p>
