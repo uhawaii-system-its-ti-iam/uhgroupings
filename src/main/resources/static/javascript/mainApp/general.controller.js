@@ -1065,11 +1065,25 @@
 
         /**
          * Toggle for the check-all checkbox that either adds all users or removes all user's usernames on the page.
+         *
+         * exclude.html and include.html uses $scope.allSelected for ng-model which dictates if all members in
+         * the list are selected or not.
+         *
+         * @param group - The group (Include or Exclude) that the user is currently in
          */
-        $scope.toggleCheckAllSelection = function () {
+        $scope.toggleCheckAllSelection = function (group) {
             $scope.allSelected = !$scope.allSelected;
-            for (let member in $scope.membersInCheckboxList) {
-                $scope.membersInCheckboxList[member] = $scope.allSelected;
+            let pageItems;
+            let pageNumber;
+            if (group == 'Exclude') {
+                pageItems = $scope.pagedItemsExclude;
+                pageNumber = $scope.currentPageExclude;
+            } else if (group == 'Include') {
+                pageItems = $scope.pagedItemsInclude;
+                pageNumber = $scope.currentPageInclude;
+            }
+            for (let i = 0; i < pageItems[pageNumber].length; i++) {
+                $scope.membersInCheckboxList[((pageItems[pageNumber][i]).uhUuid)] = $scope.allSelected;
             }
         };
 
@@ -1391,7 +1405,6 @@
             for (let member of arrayOfMembers) {
                 let currentMember = returnMemberObjectFromUserIdentifier(member, listToSearch);
                 if (currentMember === undefined) {
-                    $scope.containsInvalidMembers = true;
                     $scope.membersNotInList.push(member);
                 } else {
                     $scope.multiRemoveResults.push(currentMember);
@@ -1538,7 +1551,6 @@
                     $scope.membersToModify = [];
                     $scope.membersToAddOrRemove = "";
                     $scope.membersNotInList = [];
-                    $scope.containsInvalidMembers = false;
                     $scope.memberName = "";
                     $scope.memberUhUuid = "";
                     $scope.membersNotInList = [];

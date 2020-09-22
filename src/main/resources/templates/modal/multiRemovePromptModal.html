@@ -29,11 +29,6 @@
             </tbody>
         </table>
     </div>
-    <p ng-model="containsInvalidMembers" ng-if="containsInvalidMembers"
-       style="padding-top: 10px; color: red">
-        Members with UH username or UH number that do not exist in the {{listName}} group and will not be removed:
-        {{membersNotInList.join(", ")}}
-    </p>
 </div>
 <div class="modal-footer">
     <button class="btn btn-primary" ng-click="multiRemovePromptModalAccept()">Ok</button>
