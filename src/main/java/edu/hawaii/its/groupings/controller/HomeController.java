@@ -2,6 +2,7 @@ package edu.hawaii.its.groupings.controller;
 
 import edu.hawaii.its.groupings.access.UserContextService;
 import edu.hawaii.its.groupings.service.EmailService;
+import edu.hawaii.its.groupings.service.MessageService;
 import edu.hawaii.its.groupings.type.Feedback;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -16,7 +17,9 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import org.springframework.beans.factory.annotation.Value;
 
+import javax.annotation.Resource;
 import javax.servlet.http.HttpSession;
 import java.util.Locale;
 import java.util.Map;
@@ -25,9 +28,13 @@ import java.util.Map;
 public class HomeController {
 
     private static final Log logger = LogFactory.getLog(HomeController.class);
+    private static final int GATEMESSAGE_ID = 1;
 
     @Autowired
     private EmailService emailService;
+
+    @Autowired
+    private MessageService messageService;
 
     @Autowired
     private UserContextService userContextService;
@@ -36,8 +43,12 @@ public class HomeController {
     @RequestMapping(value = { "/", "/home" }, method = { RequestMethod.GET })
     public String home(Model model, Locale locale) {
         logger.info("User at home. The client locale is " + locale);
-        model.addAttribute("showGateMessage", Boolean.TRUE);
-        model.addAttribute("gateMessage", "What is the What?");
+
+        if (messageService.exists(GATEMESSAGE_ID)) {
+            model.addAttribute("showGateMessage", Boolean.TRUE);
+            model.addAttribute("gateMessage", messageService.find(GATEMESSAGE_ID));
+        }
+
         return "home";
     }
 

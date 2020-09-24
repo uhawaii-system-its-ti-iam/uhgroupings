@@ -3,9 +3,19 @@
       xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4"
       lang="en">
 <head th:replace="header :: copy(headingTitle='UH Groupings Home')">
-
-
+    <div class="alert alert-info" role="alert" th:if="${showGateMessage}">
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span
+                aria-hidden="true">&times;</span>
+        </button>
+        <i class="fa fa-exclamation-circle fa-lg " aria-hidden="true">
+            <p::before style="font-family: arial">
+                Grouping Planned Outtage
+            </p::before>
+        </i>
+        <p class="lead" th:utext="${gateMessage}"></p>
+    </div>
 </head>
+
 <body ng-app="UHGroupingsApp">
 <nav th:replace="menubar :: copy"></nav>
 <!--  Content container -->

@@ -615,3 +615,16 @@ label input {
 .check-space{
     margin-right: 10px;
 }
+
+.alert.alert-info {
+    padding-top: 30px;
+    padding-left: 165px;
+    font-family: arial;
+}
+
+@media screen and (max-width: 1024px) {
+    .alert.alert-info {
+        padding-left: 5%;
+        text-align: left;
+    }
+}
