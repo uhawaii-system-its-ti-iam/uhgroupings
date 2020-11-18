@@ -1,5 +1,4 @@
 (function () {
-
     /**
      * This controller contains functions specific to the admin page.
      * @param $scope - binding between controller and HTML page
@@ -34,7 +33,7 @@
         };
 
         /**
-         * Complete initialization by fetching a list of admins and list of all groupings.
+         * Complete initialization by fetching a list of admins and a list of all existing groupings.
          */
         $scope.init = function () {
             // Adds the loading spinner.
@@ -124,7 +123,7 @@
         };
 
         /**
-         *
+         * Check for checked check boxes.
          */
         $scope.removeFromGroups = function () {
             $scope.selectedGroupingsNames = [];
