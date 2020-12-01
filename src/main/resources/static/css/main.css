@@ -97,11 +97,6 @@ td.uh-pre {
     padding-bottom: 0;
 }
 
-.fixed-top .navbar-nav {
-    /*padding: 2.5rem 0 0 0;
-    font-size: .9375rem;*/
-}
-
 .fixed-top .navbar-brand {
     padding: 0;
 }
@@ -135,7 +130,6 @@ td.uh-pre {
 
 .navbar .navbar-logout {
     padding: .5rem .5625rem;
-    /*font-size: .9375rem;*/
     color: #212529;
     border: 0;
     text-decoration: none;
@@ -159,10 +153,6 @@ td.uh-pre {
 
 .spacer {
     margin-top: 2.5rem;
-}
-
-.required-asterisk {
-    color: red;
 }
 
 .card.card-with-table {
@@ -281,11 +271,8 @@ table .p-12 {
     content: '\f106';
 }
 
-.modal-danger, .modal-danger .modal-title {
-    color: #721c24;
-}
 
-.modal-danger .modal-header {
+/*.modal-danger .modal-header {
     background-color: #f8d7da;
     border-bottom-color: #f8d7da;
 }
@@ -297,6 +284,9 @@ table .p-12 {
 .modal-danger .modal-footer {
     border-top-color: #ffeaece6;
 }
+
+
+ */
 
 .fade.in {
     opacity: 1;
@@ -508,10 +498,6 @@ form.seamless button {
 
 .container {
     flex: 1;
-}
-
-.fa.fa-fw.fa-pencil-square-o {
-    color: #007bff;
 }
 
 .btn-bottom {
