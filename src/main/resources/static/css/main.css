@@ -271,23 +271,6 @@ table .p-12 {
     content: '\f106';
 }
 
-
-/*.modal-danger .modal-header {
-    background-color: #f8d7da;
-    border-bottom-color: #f8d7da;
-}
-
-.modal-danger .modal-body {
-    background-color: #ffeaece6;
-}
-
-.modal-danger .modal-footer {
-    border-top-color: #ffeaece6;
-}
-
-
- */
-
 .fade.in {
     opacity: 1;
 }
@@ -403,9 +386,6 @@ th {
     max-width: 220px;
 }
 
-th.grouping-members {
-    min-width: 8rem;
-}
 
 .manage-groupings td span.path {
     display: inline-block;
@@ -476,24 +456,17 @@ form.seamless button {
     width: 3%;
 }
 
-.card {
-    overflow: hidden;
-}
-
 .nav-tabs .nav-item {
     margin-top: 1rem;
 }
 
 .card {
     margin-top: 1rem;
+    overflow: hidden;
 }
 
 .dashboard-item-icon .fa-wrench {
     transform: rotate(-90deg);
-}
-
-.text-tracking {
-    letter-spacing: 1px;
 }
 
 .container {
@@ -514,11 +487,6 @@ form.seamless button {
     margin-top: 3rem;
 }
 
-.selected {
-    background-color: #004e59;
-    color: white;
-}
-
 .animate-if {
     color: black;
 }
@@ -535,10 +503,6 @@ form.seamless button {
 .animate-if.ng-leave,
 .animate-if.ng-enter.ng-enter-active {
     opacity: 1;
-}
-
-.add-import-buttons {
-    padding: 7px 15px;;
 }
 
 
@@ -560,11 +524,6 @@ form.seamless button {
     font-weight: bold;
     width: 100%;
     white-space: nowrap;
-}
-
-.blu-bold {
-    color: #212529;
-    font-weight: bold;
 }
 
 /**

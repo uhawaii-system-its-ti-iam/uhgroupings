@@ -14,15 +14,6 @@ h2, h3, h4, h5, h6 {
     color: #222;
 }
 
-.deep-blue-bg {
-    background-color: var(--deep-blue);
-    color: #fff;
-}
-
-.green-blue-bg {
-    background-color: var(--green-blue);
-}
-
 .dark-teal-bg {
     background-color: var(--dark-teal);
     color: #fff;
@@ -34,10 +25,6 @@ h2, h3, h4, h5, h6 {
 
 .blue-bg {
     background-color: var(--blue);
-}
-
-.light-teal-bg {
-    background-color: var(--light-teal);
 }
 
 .teal-tint-bg {
@@ -69,14 +56,6 @@ h2, h3, h4, h5, h6 {
 /* bootstrap overrides */
 .text-primary {
     color: var(--dark-teal) !important;
-}
-
-.text-muted {
-    color: var(--teal) !important;
-}
-
-.text-info {
-    color: var(--blue) !important;
 }
 
 /* end bootstrap overrides */
@@ -120,21 +99,8 @@ body h1 {
     background: rgba(0, 0, 0, 0.5);
 }
 
-.uh-branding-one {
-    color: #777;
-}
-
-.uh-branding-two {
-    color: #777;
-}
-
 .dropshadow {
     text-shadow: 1px 1px 3px rgba(150, 150, 150, 1);
-}
-
-.page-item.active > .page-link {
-    background-color: var(--teal-tint);
-    border-color: var(--teal-tint);
 }
 
 .card {
@@ -145,15 +111,6 @@ body h1 {
     word-wrap: break-word;
     background-color: transparent;
     background-clip: border-box;
-
-}
-
-.jumbotron .h1, .jumbotron h1 {
-    font-size: 63px;
-}
-
-.jumbotron .h1, .jumbotron h1 {
-    color: inherit;
 }
 
 .border {
@@ -301,21 +258,9 @@ btn.dark-teal-bg {
     *background-color: #4c90a8;
 }
 
-.btn-link {
-    color: var(--deep-blue);
-}
-
 /* end grouper buttons */
 
 /* font awesome icons */
-
-.cancel {
-    color: var(--red-cancel);
-}
-
-.save {
-    color: #007bff;
-}
 
 .fa.fa-fw.fa-pencil-square-o {
     color: #007bff;
@@ -375,22 +320,8 @@ h3{
     color: #1c6070;
 }
 
-.loading-text{
-    margin-left: 4.357em;
-    color: #296191;
-    float: left;
-}
-
 .link{
     color: #0050AD;
 }
 
 /* text colors end */
-
-/* modal colors */
-
-.modal-danger, .modal-danger .modal-title {
-    color: #721c24;
-}
-
-/* end modal colors */
