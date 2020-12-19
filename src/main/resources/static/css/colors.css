@@ -88,6 +88,11 @@ h2, h3, h4, h5, h6 {
     height: 44px;
 }
 
+.page-item.active > .page-link {
+    background-color: var(--teal-tint);
+    border-color: var(--teal-tint);
+}
+
 /* end navbar */
 
 body h1 {
