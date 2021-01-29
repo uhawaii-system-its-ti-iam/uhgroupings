@@ -110,13 +110,20 @@
             },
 
             /**
-             * Add a member to the exclude group of a grouping.
+             * Add a member to owner of a grouping.
              */
             assignOwnership(path, newOwner, onSuccess, onError) {
                 let endpoint = BASE_URL + path + "/" + newOwner + "/assignOwnership";
                 dataProvider.updateData(endpoint, onSuccess, onError);
             },
 
+            assignOwnerships(ownersToAdd, path, onSuccess, onError, modal) {
+                let endpoint = BASE_URL + path + "/" + ownersToAdd + "/assignOwnerships";
+                console.log("entered groupingService function");
+                return new Promise(resolve => {
+                    dataProvider.updateDataWithTimeoutModal(endpoint, onSuccess, onError, modal);
+                });
+            },
             /**
              * Add a user to the list of admins.
              */

@@ -79,12 +79,12 @@
                                ng-init="errorDismissed = true; resetErrors()"
                                ng-blur="errorDismissed = true; resetErrors()"
                                title="Enter one or more UH members"
-                               ng-model="ownerToAdd"
+                               ng-model="ownersToAdd"
                                id="owner-input"/>
                         <div>
                             <button class="btn btn-primary"
                                     ng-blur="errorDismissed = true; resetErrors()"
-                                    ng-click="resetErrors(); addOwner(); errorDismissed = false"
+                                    ng-click="resetErrors(); addOwners(); errorDismissed = false"
                                     style="margin-left: 2px">
                                 Add
                             </button>

@@ -14,6 +14,8 @@
 
         $scope.userToAdd = "";
         $scope.usersToAdd = "";
+        $scope.ownerToAdd = "";
+        $scope.ownersToAdd = "";
         $scope.multiAddThreshold = 100;
         $scope.maxImport = 100000;
         $scope.multiAddResults = [];
@@ -580,6 +582,7 @@
                     8000);
             };
             let handleSuccessfulAdd = function (res) {
+                console.log("res is: " + JSON.stringify(res));
                 $scope.launchMultiAddResultModal(listName);
                 for (let i = 0; i < res.length; i++) {
                     $scope.multiAddResults[i] = res[i].person;
@@ -608,6 +611,7 @@
                 templateUrl: "modal/multiAddResultModal",
                 scope: $scope
             });
+            console.log("listname being passed: " + listName);
             $scope.loading = false;
             $scope.multiAddResultModalInstance.result.finally(function () {
                 clearAddMemberInput(listName);
@@ -953,6 +957,50 @@
          */
         $scope.cancelConfirmAddUser = function () {
             $scope.confirmAddModalInstance.dismiss();
+        };
+
+        /**
+         * Take $scope.usersToAdd count the number of words it contains and split it into a comma separated string, then
+         * decide whether to a multi add or a single add is necessary for owners
+         */
+        $scope.addOwners = function() {
+            console.log("entered addOwners function");
+            if (_.isEmpty($scope.ownersToAdd)) {
+                $scope.emptyInput = true;
+            } else {
+                let numOwners = ($scope.ownersToAdd.split(" ").length - 1);
+                if (numOwners > 0) {
+                    let users = $scope.ownersToAdd.split(/[ ,]+/).join(",");
+                    $scope.ownersToAdd = [];
+                    $scope.addMultipleOwners(users);
+                } else {
+                    $scope.ownerToAdd = $scope.ownersToAdd;
+                    $scope.addOwner();
+                }
+            }
+        };
+
+        /**
+         *Send the list of users to be added as owners to the server as an HTTP POST request.
+         */
+        $scope.addMultipleOwners = async function (list) {
+            let groupingPath = $scope.selectedGrouping.path;
+            let listName = "owners";
+            console.log("entered addMultipleOwners function");
+
+            let handleSuccessfulAdd = function(res) {
+                console.log("res is: " + JSON.stringify(res));
+                $scope.launchMultiAddResultModal(listName);
+                for (let i = 0; i < res.length; i++) {
+                    $scope.multiAddResults[i] = res[i].person;
+                    $scope.multiAddResultsGeneric[i] = res[i].person;
+                }
+                if (undefined !== res[0].person) {
+                    $scope.personProps = Object.keys(res[0].person);
+                    $scope.personProps.shift();
+                }
+            };
+            await groupingsService.assignOwnerships(list, groupingPath, handleSuccessfulAdd, handleUnsuccessfulRequest );
         };
 
         /**
@@ -1373,7 +1421,10 @@
                     break;
                 case "owners":
                     $scope.ownerToAdd = "";
+                    $scope.ownersToAdd = "";
+                    $scope.multiAddResults = [];
                     $scope.waitingForImportResponse = false;
+                    $scope.personProps = [];
                     break;
                 case "admins":
                     $scope.adminToAdd = "";

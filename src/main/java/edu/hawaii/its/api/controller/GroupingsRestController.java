@@ -413,6 +413,19 @@ public class GroupingsRestController {
     }
 
     /**
+     * Give ownership of grouping at grouping path to a list of owners. A user with owner privileges has read and write privileges
+     * of a grouping.
+     */
+    @PostMapping(value = "/{groupingPath}/{ownersToAdd}/assignOwnerships")
+    public ResponseEntity<String> assignOwnerships(Principal principal, @PathVariable String groupingPath,
+            @PathVariable String ownersToAdd) {
+        logger.info("Entered REST assignOwnerships...");
+        String safeGrouping = policy.sanitize(groupingPath);
+        String safeNewOwners = policy.sanitize(ownersToAdd);
+        String uri = String.format(API_2_1_BASE + "/groupings/%s/multipleOwners/%s", safeGrouping, safeNewOwners);
+        return httpRequestService.makeApiRequest(principal.getName(), uri, HttpMethod.PUT);
+    }
+    /**
      * Cancel owner privileges of ownerToRemove for the grouping at groupingPath.
      */
     @PostMapping(value = "/{groupingPath}/{ownerToRemove}/removeOwnership")

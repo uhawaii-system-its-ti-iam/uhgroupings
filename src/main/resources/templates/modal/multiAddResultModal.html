@@ -16,13 +16,13 @@
             <thead class="import-table-thead-tbody-tr import-table-thead">
             <tr class="import-table-thead-tbody-tr" style="white-space: nowrap">
                 <!-- Display table headings -->
-                <td ng-repeat="prop in personProps ">{{ prop }}</td>
+                <td ng-repeat="prop in personProps track by $index ">{{ prop }}</td>
             </tr>
             </thead>
             <tbody class="import-table-tbody">
-            <tr class="import-table-thead-tbody-tr" ng-repeat="person in multiAddResults">
+            <tr class="import-table-thead-tbody-tr" ng-repeat="person in multiAddResults track by $index">
                 <!-- Display table data -->
-                <td class="modal-names" ng-repeat="prop in personProps">
+                <td class="modal-names" ng-repeat="prop in personProps track by $index">
                     {{ person[prop] }}
                 </td>
             </tr>
