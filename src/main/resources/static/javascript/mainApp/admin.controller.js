@@ -46,7 +46,6 @@
                 $scope.groupingsList = _.sortBy(res.allGroupingPaths, "name");
                 $scope.filter($scope.groupingsList, "pagedItemsGroupings", "currentPageGroupings", $scope.groupingsQuery, true);
                 $scope.loading = false;
-
             }, function (res) {
                 if (res.status === 403) {
                     $scope.createRoleErrorModal();
