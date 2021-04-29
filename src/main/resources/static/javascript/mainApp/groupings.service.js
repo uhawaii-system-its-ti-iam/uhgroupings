@@ -23,7 +23,6 @@
 
                 let endpoint = BASE_URL + "groupings/" + path + "?";
 
-
                 let params = "";
 
                 if (page !== null) {

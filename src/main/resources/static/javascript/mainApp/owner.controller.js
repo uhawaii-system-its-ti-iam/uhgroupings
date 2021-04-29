@@ -19,8 +19,21 @@
 
             groupingsService.getGroupingsOwned(function (res) {
                 $scope.groupingsList = _.sortBy(res, "name");
-                $scope.pagedItemsGroupings = $scope.groupToPages($scope.groupingsList);
 
+                //How to access current User's privileges, Admins can access these hidden paths.
+                //Using filter alongside with getSyncDestList to find and update groupingsList with paths that are not hidden.
+                $scope.groupingsList = _.filter($scope.groupingsList, function(item) {
+                    groupingsService.getSyncDestList(item.path, function(res) {
+                        if (!JSON.parse(res[0].description).hidden) {
+                            return item;
+                        }
+                        }, function () {
+                        $scope.loading = false;
+                        $scope.createApiErrorModal();
+                    });
+                });
+
+                $scope.pagedItemsGroupings = $scope.groupToPages($scope.groupingsList);
                 $scope.loading = false;
             }, function (res) {
                 dataProvider.handleException({ exceptionMessage: JSON.stringify(res, null, 4) }, "feedback/error", "feedback");

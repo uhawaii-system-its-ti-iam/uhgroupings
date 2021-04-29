@@ -118,7 +118,6 @@
          */
         $scope.displayGrouping = function (currentPage, index) {
             $scope.selectedGrouping = $scope.pagedItemsGroupings[currentPage][index];
-            console.log($scope.pagedItemsGroupings[currentPage][index]);
             $scope.getGroupingInformation();
             $scope.showGrouping = true;
         };
@@ -255,15 +254,6 @@
 
                     //The grouping description is found here under the res. We just have to do an array function.
                     $scope.syncDestArray = res.syncDestinations;
-
-                    //JSON parser to find the boolean of hidden
-                    //Using this we can use the array function filter:
-                    //if current user != superUser/Admin
-                    //... = displayedGroupPaths.filter(hidden => JSON.parse(res.syncDestinations[0].description).hidden = false);
-                    //Initially, what displays the group paths when first arriving to the page?
-                    //Table controller might hold some hints
-                    //Led me to the owner controller
-                    console.log(JSON.parse(res.syncDestinations[0].description).hidden);
 
                     //Stop loading spinner and turn on loading text
                     $scope.loading = false;
