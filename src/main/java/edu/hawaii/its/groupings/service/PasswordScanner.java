@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import java.io.File;
 
 import javax.annotation.PostConstruct;
 
@@ -17,7 +18,8 @@ import edu.hawaii.its.groupings.exceptions.PasswordFoundException;
 public class PasswordScanner {
 
     private static final Log logger = LogFactory.getLog(PasswordScanner.class);
-    private List<String> locations = new ArrayList<>(Arrays.asList("src/main/resources"));
+    String path = "src/main/resources";
+    private List<String> locations = new ArrayList<>(Arrays.asList(path));
     private final String pattern = "^.*password.*\\=(?!\\s*$).+";
 
     @PostConstruct
@@ -29,10 +31,6 @@ public class PasswordScanner {
             logger.info("init; started.");
         } catch (PasswordFoundException pfe) {
             throw pfe;
-        } catch (Exception e) {
-            String message = "init; skipping over scanning "
-                    + "since it failed unexpectedly. Error: " + e;
-            logger.warn(message);
         }
     }
 
@@ -42,10 +40,8 @@ public class PasswordScanner {
         String patternResult = "";
         for (String location : locations) {
             List<String> fileLocations = checkForPattern.fileLocations(".properties", location, pattern);
-            if (fileLocations != null && !fileLocations.isEmpty()) {
-                for (String list : fileLocations) {
-                    patternResult += "\n" + list;
-                }
+            for (String list : fileLocations) {
+                patternResult += "\n" + list;
             }
         }
 
